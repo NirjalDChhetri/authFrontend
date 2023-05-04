@@ -1,33 +1,54 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, FormControl, TextField, Typography, FormHelperText, IconButton, InputAdornment, Grid, Link } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  TextField,
+  Typography,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  Grid,
+  Link,
+} from "@mui/material";
 import { Formik } from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { registerSchema } from "../../../config/schema/authSchems";
-import { IRegister } from "../../../interfaces/register.interface";
-
+import {
+  IRegister,
+  IRegisterResponse,
+} from "../../../interfaces/register.interface";
+import AxiosInstance from "../../../api";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
-    const navigate = useNavigate()
-    const [showPassword, setShowPassword] = useState(false);
-    const [showconfirmPassword, setShowconfirmPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleClickShowConfirmPassword = () => setShowconfirmPassword((show) => !show);
-    const handleSubmit = (data: IRegister) => {
-        console.log(data)
-        // const resp = awit LineAxisOutlined.post('/amamnma',data)
-        // if(resp.success){
-        //     toString()
-        //     navigate()
-        // }
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showconfirmPassword, setShowconfirmPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowconfirmPassword((show) => !show);
+  const handleSubmit = async (data: IRegister) => {
+    const formattedData = {
+      ...data,
     };
-    const handleMouseDownPassword = (
-        event: React.MouseEvent<HTMLButtonElement>
-      ) => {
-        event.preventDefault();
-      };
-    return (
+    delete formattedData.confirmPassword
+    const response: IRegisterResponse = await AxiosInstance.post(
+      "/user/signup",
+      formattedData
+    );
+    if (!response?.data.isVerified) {
+      toast.success("Registration Successfully");
+      console.log("Response data is", response.data);
+    }
+  };
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+  return (
     <>
       <Box>
         <Typography>User Register</Typography>
@@ -42,8 +63,14 @@ const RegisterPage = () => {
           validationSchema={registerSchema}
         >
           {({ errors, values, handleChange, handleSubmit }) => {
+            // console.log('a)
             return (
-              <Box component="form" width='50%' sx={{justifycontent:'center', mx:'auto'}} onSubmit={handleSubmit}>
+              <Box
+                component="form"
+                width="50%"
+                sx={{ justifycontent: "center", mx: "auto" }}
+                onSubmit={handleSubmit}
+              >
                 <FormControl fullWidth>
                   <TextField
                     fullWidth
@@ -138,7 +165,7 @@ const RegisterPage = () => {
                   variant="contained"
                   className="mt-2"
                 >
-                  Login
+                  Signup
                 </LoadingButton>
                 <Grid>
                   <Grid item> Already have an Account? </Grid>
@@ -154,7 +181,6 @@ const RegisterPage = () => {
                   </Grid>
                 </Grid>
               </Box>
-
             );
           }}
         </Formik>
