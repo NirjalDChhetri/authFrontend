@@ -11,7 +11,7 @@ import {
   Checkbox,
   Grid,
 } from "@mui/material";
-import { Mp, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Formik } from "formik";
 import { loginSchema } from "../../config/schema/authSchems";
 import { LoadingButton } from "@mui/lab";
@@ -47,7 +47,7 @@ const UserLoginForm = () => {
           onSubmit={handleSubmit}
           validationSchema={loginSchema}
         >
-          {({ errors, values, handleChange, handleSubmit, touched }) => {
+          {({ errors, values, handleChange, handleSubmit}) => {
             return (
               <Box
                 component="form"

@@ -30,17 +30,25 @@ const RegisterPage = () => {
   const handleClickShowConfirmPassword = () =>
     setShowconfirmPassword((show) => !show);
   const handleSubmit = async (data: IRegister) => {
-    const formattedData = {
+    const allData = {
       ...data,
     };
-    delete formattedData.confirmPassword
+    delete allData.confirmPassword
+    try{
     const response: IRegisterResponse = await AxiosInstance.post(
       "/user/signup",
-      formattedData
+      allData
     );
     if (!response?.data.isVerified) {
-      toast.success("Registration Successfully");
-      console.log("Response data is", response.data);
+      toast("Registration Successfull")
+      //console.log("Response data is", response.data);
+    }
+  }catch (error:any) {
+    if(error){
+      toast("Error")
+    }
+
+
     }
   };
   const handleMouseDownPassword = (
