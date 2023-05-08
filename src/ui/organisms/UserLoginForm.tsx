@@ -17,14 +17,20 @@ import { loginSchema } from "../../config/schema/authSchems";
 import { LoadingButton } from "@mui/lab";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/userAuthContex";
+import { Ilogin } from "../../interfaces/login.interface";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
+
+  const { user, setUser, login } = useUser()
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleSubmit = (data: any) => {
-    console.log("form submit");
+  const handleSubmit = async (data: Ilogin) => {
+    const status = await login (data.email, data.password)
+    console.log("form submit", status);
   };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
