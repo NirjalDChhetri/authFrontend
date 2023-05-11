@@ -3,25 +3,29 @@ import { useContext, createContext } from "react";
 import { props } from "../interfaces/props.interface";
 import AxiosInstance from "../api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const userContext = createContext<any>(null);
-export const useUser = ()=> useContext(userContext)
+export const useUser = () => useContext(userContext);
 
 const userProvider = ({ children }: props) => {
   let userDate: any;
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [user, setUser] = useState<any>(userDate);
+  const [user, setUser] = useState<any>('this is user');
 
   const login = async (email: string, password: string) => {
+    console.log("this is email",email)
     try {
       const response = await AxiosInstance.post("/user/login", {
         email,
         password,
       });
+      console.log('ajbsdjab', response)
       if (response.status === 200) {
-        navigate("/dashboard");
+        toast('success')
+        // navigate("/dashboard");
         return {
           success: true,
           message: "User loged in Successfully",
@@ -30,11 +34,13 @@ const userProvider = ({ children }: props) => {
     } catch (error: any) {
       return {
         success: false,
-        message: error.response.data ? error.response.data.message : error,
+        message: error.response.data
       };
     }
   };
-  return ( <userContext.Provider value={{user, setUser, login}}>{children}</userContext.Provider>
-)};
+  return (
+    <userContext.Provider value={{ user, setUser, login }}>{children}</userContext.Provider>
+  );
+};
 
 export default userProvider;

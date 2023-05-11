@@ -23,7 +23,9 @@ import { Ilogin } from "../../interfaces/login.interface";
 const UserLoginForm = () => {
   const navigate = useNavigate();
 
-  const { user, setUser, login } = useUser()
+  const { login, user } = useUser()
+
+  console.log(user, "user is")
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
