@@ -19,22 +19,23 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/userAuthContex";
 import { Ilogin } from "../../interfaces/login.interface";
-import { toast } from'react-toastify';
+import { toast } from "react-toastify";
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
 
   const { login, user } = useUser();
 
-  console.log(user, "user is");
+  // console.log("user is", user);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = async (data: Ilogin) => {
     const res = await login(data.email, data.password);
-    console.log("form submit", res);
+    // console.log("form submit", res);
     if (!res.status) {
+      toast("success");
       navigate("/dashboard", { replace: true });
     }
   };

@@ -39,13 +39,13 @@ const RegisterPage = () => {
       "/user/signup",
       allData
     );
-    if (!response?.data.isVerified) {
+    if (!response?.data?.isVerified) {
       toast("Registration Successfull")
-      //console.log("Response data is", response.data);
+      console.log("Response data is", response.data);
     }
   }catch (error:any) {
     if(error){
-      toast("Error")
+      toast('Invalid Email or Password')
     }
 
 

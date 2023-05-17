@@ -23,9 +23,8 @@ const userProvider = ({ children }: props) => {
         email,
         password,
       });
-       console.log('response from backend', response)
+      //  console.log('response from backend', response)
       if (response.status === 200) {
-        toast('success')
         return {
           success: true,
           message: "User loged in Successfully",
