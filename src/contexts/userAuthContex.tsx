@@ -5,16 +5,17 @@ import AxiosInstance from "../api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+//Context
 export const userContext = createContext<any>(null);
 export const useUser = () => useContext(userContext);
 
+//User Provider
 const userProvider = ({ children }: props) => {
-  let userDate: any;
+  let userData: any;
 
-  // const navigate = useNavigate();
+  const [user, setUser] = useState<any>(userData);
 
-  const [user, setUser] = useState<any>('this is user');
-
+  //function to login
   const login = async (email: string, password: string) => {
     console.log("this is email",email)
     try {
@@ -22,10 +23,9 @@ const userProvider = ({ children }: props) => {
         email,
         password,
       });
-      console.log('ajbsdjab', response)
+       console.log('response from backend', response)
       if (response.status === 200) {
         toast('success')
-        // navigate("/dashboard");
         return {
           success: true,
           message: "User loged in Successfully",

@@ -19,20 +19,24 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/userAuthContex";
 import { Ilogin } from "../../interfaces/login.interface";
+import { toast } from'react-toastify';
 
 const UserLoginForm = () => {
   const navigate = useNavigate();
 
-  const { login, user } = useUser()
+  const { login, user } = useUser();
 
-  console.log(user, "user is")
+  console.log(user, "user is");
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleSubmit = async (data: Ilogin) => {
-    const status = await login (data.email, data.password)
-    console.log("form submit", status);
+    const res = await login(data.email, data.password);
+    console.log("form submit", res);
+    if (!res.status) {
+      navigate("/dashboard", { replace: true });
+    }
   };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -55,12 +59,12 @@ const UserLoginForm = () => {
           onSubmit={handleSubmit}
           validationSchema={loginSchema}
         >
-          {({ errors, values, handleChange, handleSubmit}) => {
+          {({ errors, values, handleChange, handleSubmit }) => {
             return (
               <Box
                 component="form"
                 width="50%"
-                sx={{ justifyContent: "center", mx: "auto"}}
+                sx={{ justifyContent: "center", mx: "auto" }}
                 onSubmit={handleSubmit}
               >
                 <FormControl fullWidth>
