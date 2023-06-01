@@ -27,34 +27,29 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirmPassword, setShowconfirmPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassword = () =>
-    setShowconfirmPassword((show) => !show);
+  const handleClickShowConfirmPassword = () => setShowconfirmPassword((show) => !show);
+  const handleMouseDownPassword = ( event: React.MouseEvent<HTMLButtonElement> ) => {
+    event.preventDefault();
+  };
   const handleSubmit = async (data: IRegister) => {
     const allData = {
       ...data,
     };
-    delete allData.confirmPassword
-    try{
-    const response: IRegisterResponse = await AxiosInstance.post(
-      "/user/signup",
-      allData
-    );
-    if (!response?.data?.isVerified) {
-      toast("Registration Successfull")
-      console.log("Response data is", response.data);
+    delete allData.confirmPassword;
+    try {
+      const response: IRegisterResponse = await AxiosInstance.post(
+        "/user/signup",
+        allData
+      );
+      if (!response?.data?.isVerified) {
+        toast("Registration Successfull");
+        console.log("Response data is", response.data);
+      }
+    } catch (error: any) {
+      if (error) {
+        toast("Invalid Email or Password");
+      }
     }
-  }catch (error:any) {
-    if(error){
-      toast('Invalid Email or Password')
-    }
-
-
-    }
-  };
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
   };
   return (
     <>
@@ -66,12 +61,12 @@ const RegisterPage = () => {
             email: "",
             password: "",
             confirmPassword: "",
+            
           }}
           onSubmit={handleSubmit}
           validationSchema={registerSchema}
         >
-          {({ errors, values, handleChange, handleSubmit }) => {
-            // console.log('a)
+          {({ errors, values, handleChange, handleSubmit, resetForm }) => {
             return (
               <Box
                 component="form"
@@ -158,7 +153,7 @@ const RegisterPage = () => {
                               },
                             }}
                           >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showconfirmPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
                       ),
