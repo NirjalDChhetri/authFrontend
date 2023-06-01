@@ -24,9 +24,8 @@ import { toast } from "react-toastify";
 const UserLoginForm = () => {
   const navigate = useNavigate();
 
-  const { login, user } = useUser();
-
-  // console.log("user is", user);
+  const { login, user, SetUser } = useUser();
+// console.log("user is", user);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
